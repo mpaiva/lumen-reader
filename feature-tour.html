@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumen Reader feature tour</title>
+<style>
+  :root { color-scheme: light dark; --fg: #1b1b1b; --bg: #fdfdfb; --muted: #4a4a4a; --line: #c9c9c4; --accent: #0b57d0; --try-bg: #eef3fb; --expect-bg: #eef7ee; --warn-bg: #fff4e5; }
+  @media (prefers-color-scheme: dark) { :root { --fg: #ececec; --bg: #161616; --muted: #b9b9b9; --line: #444; --accent: #8ab4f8; --try-bg: #1d2533; --expect-bg: #1c2a1d; --warn-bg: #33281a; } }
+  body { font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; color: var(--fg); background: var(--bg); margin: 0; }
+  header, main, footer, nav, aside { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+  header { padding-top: 24px; }
+  nav ul { columns: 2; padding-left: 20px; }
+  section { border-top: 1px solid var(--line); padding: 8px 0 20px; }
+  a { color: var(--accent); }
+  .try, .expect, .warn { border-radius: 6px; padding: 8px 12px; margin: 8px 0; }
+  .try { background: var(--try-bg); }
+  .expect { background: var(--expect-bg); }
+  .warn { background: var(--warn-bg); }
+  .try::before { content: "Try: "; font-weight: 600; }
+  .expect::before { content: "Expect: "; font-weight: 600; }
+  kbd { font: 14px ui-monospace, Menlo, monospace; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; }
+  table { border-collapse: collapse; margin: 8px 0; }
+  th, td { border: 1px solid var(--line); padding: 4px 10px; text-align: left; }
+  label { display: inline-block; min-width: 150px; }
+  .row { margin: 6px 0; }
+  .tiny { width: 14px; height: 14px; padding: 0; margin: 0 1px; font-size: 9px; }
+  .icon-button { width: 36px; height: 32px; }
+  video { background: #222; }
+  .keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 0 24px; }
+  .keys { line-height: 1.35; align-items: start; }
+  .keys table { width: 100%; font-size: 15px; }
+  .keys caption { text-align: left; font-weight: 600; padding: 6px 0 2px; }
+  .keys th, .keys td { padding: 3px 8px; }
+  .keys th[scope=row] { font-weight: normal; white-space: nowrap; width: 1%; }
+  .keys kbd { font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Lumen Reader feature tour</h1>
+  <p>One section per feature. Each says what to <strong>try</strong> (keys, or words to say while holding
+  <kbd>Ctrl</kbd>+<kbd>Opt</kbd>) and what to <strong>expect</strong>. Lumen Reader's commands use
+  <kbd>Ctrl</kbd>+<kbd>Opt</kbd> held together. Everything here is on this page; nothing is sent anywhere.</p>
+  <p class="warn">Section 17 (audit) has accessibility mistakes on purpose. Everything else is meant to be correct.</p>
+</header>
+
+<aside class="cheatsheet" aria-labelledby="keys-h">
+  <h2 id="keys-h">Keys at a glance</h2>
+  <p>Hold <kbd>Ctrl</kbd>+<kbd>Opt</kbd> and press the keys shown, except the rows marked <em>alone</em>. The <kbd>Shift</kbd> letters can be moved to other letters in Settings.</p>
+  <div class="keys">
+  <table>
+    <caption>Moving and reading</caption>
+    <thead><tr><th scope="col">With <kbd>Ctrl</kbd>+<kbd>Opt</kbd></th><th scope="col">Does</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><kbd>Right</kbd> / <kbd>Left</kbd></th><td>Next / previous item</td></tr>
+      <tr><th scope="row"><kbd>Home</kbd> / <kbd>End</kbd></th><td>Top / bottom</td></tr>
+      <tr><th scope="row"><kbd>A</kbd></th><td>Read all (any key stops)</td></tr>
+      <tr><th scope="row"><kbd>B</kbd></th><td>Read from the top</td></tr>
+      <tr><th scope="row"><kbd>Z</kbd></th><td>Repeat the last thing said</td></tr>
+      <tr><th scope="row"><kbd>P</kbd> / <kbd>S</kbd> / <kbd>W</kbd> / <kbd>C</kbd></th><td>Paragraph, sentence, word, character (twice: spell, or phonetic letter)</td></tr>
+      <tr><th scope="row"><kbd>Space</kbd></th><td>Press the item</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>Down</kbd> / <kbd>Up</kbd></th><td>Interact with a group or table / stop</td></tr>
+      <tr><th scope="row"><kbd>Up</kbd> / <kbd>Down</kbd></th><td>Row above / below, in a table</td></tr>
+      <tr><th scope="row"><kbd>R</kbd> / <kbd>C</kbd></th><td>Read the row / column header, in a table</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <caption>Finding</caption>
+    <thead><tr><th scope="col">With <kbd>Ctrl</kbd>+<kbd>Opt</kbd></th><th scope="col">Does</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>H</kbd></th><td>Next heading</td></tr>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>L</kbd> / <kbd>V</kbd></th><td>Next link / visited link</td></tr>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>J</kbd></th><td>Next form control</td></tr>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>T</kbd> / <kbd>X</kbd> / <kbd>G</kbd></th><td>Next table, list, image</td></tr>
+      <tr><th scope="row">add <kbd>Shift</kbd></th><td>Previous instead of next</td></tr>
+      <tr><th scope="row"><kbd>U</kbd></th><td>Rotor: <kbd>Left</kbd>/<kbd>Right</kbd> for the list, type to filter, <kbd>Return</kbd> to go</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <caption>Speech and on/off</caption>
+    <thead><tr><th scope="col">With <kbd>Ctrl</kbd>+<kbd>Opt</kbd></th><th scope="col">Does</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Tap <kbd>Control</kbd> <em>alone</em></th><td>Pause or resume speech</td></tr>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>Right</kbd> / <kbd>Left</kbd></th><td>Choose rate, volume, pitch or verbosity</td></tr>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>Up</kbd> / <kbd>Down</kbd></th><td>Change it</td></tr>
+      <tr><th scope="row"><kbd>;</kbd></th><td>Lock <kbd>Ctrl</kbd>+<kbd>Opt</kbd> down, so commands need just the key</td></tr>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>S</kbd></th><td>Turn Lumen Reader off or on</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <caption>Ask, AI and tools</caption>
+    <thead><tr><th scope="col">With <kbd>Ctrl</kbd>+<kbd>Opt</kbd></th><th scope="col">Does</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><kbd>/</kbd></th><td>Ask about the screen (<kbd>Escape</kbd> cancels)</td></tr>
+      <tr><th scope="row">Hold, say something</th><td>In a text field: dictate into it. In the ask box: a question, or a command like “open Safari”</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>S</kbd></th><td>Summarise the screen</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>T</kbd></th><td>Describe the table</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>R</kbd></th><td>Reading mode</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>L</kbd></th><td>Describe the picture</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>A</kbd></th><td>Accessibility audit</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>C</kbd></th><td>Check before sending</td></tr>
+      <tr><th scope="row"><kbd>Shift</kbd>+<kbd>F</kbd></th><td>Fill this form</td></tr>
+      <tr><th scope="row"><kbd>Cmd</kbd>+<kbd>,</kbd> <em>alone</em></th><td>Settings (from the menu-bar menu)</td></tr>
+    </tbody>
+  </table>
+  </div>
+</aside>
+
+<nav aria-label="Sections">
+  <h2>Contents</h2>
+  <ul>
+    <li><a href="#basics">1. Moving and reading</a></li>
+    <li><a href="#find">2. Find and the rotor</a></li>
+    <li><a href="#units">3. Words, characters, spelling</a></li>
+    <li><a href="#controls">4. Controls and their states</a></li>
+    <li><a href="#live">5. Live updates and values</a></li>
+    <li><a href="#tables">6. Tables</a></li>
+    <li><a href="#reading">7. Reading mode</a></li>
+    <li><a href="#ask">8. Ask about the screen</a></li>
+    <li><a href="#media">9. Videos, images and pictures</a></li>
+    <li><a href="#unnamed">10. Unlabelled controls</a></li>
+    <li><a href="#dictation">11. Dictation</a></li>
+    <li><a href="#voice">12. Voice commands</a></li>
+    <li><a href="#fill">13. Fill this form</a></li>
+    <li><a href="#send">14. Check before sending</a></li>
+    <li><a href="#pronounce">15. Pronunciation</a></li>
+    <li><a href="#apps">16. Apps, windows and settings</a></li>
+    <li><a href="#audit">17. Accessibility audit</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<section id="basics" aria-labelledby="basics-h">
+  <h2 id="basics-h">1. Moving and reading</h2>
+  <p class="try"><kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Right</kbd> and <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Left</kbd> through this section; <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Home</kbd> / <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>End</kbd>;
+  <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>A</kbd> to read all (any key stops it); <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Z</kbd> repeats; tap <kbd>Control</kbd> to pause.</p>
+  <p class="expect">Each item spoken as name, status, type ("Save, button"); the outline follows and the page scrolls
+  to it; a low tone at the start or end; read all uses the long-reading voice.</p>
+  <p>This paragraph is ordinary text to read. The next one is too.</p>
+  <p>Turn Lumen Reader off and on with <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Cmd</kbd>+<kbd>S</kbd>; lock <kbd>Ctrl</kbd>+<kbd>Opt</kbd> with <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>;</kbd>.</p>
+</section>
+
+<section id="find" aria-labelledby="find-h">
+  <h2 id="find-h">2. Find and the rotor</h2>
+  <p class="try"><kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Cmd</kbd>+<kbd>H</kbd> (next heading), <kbd>L</kbd> (link), <kbd>J</kbd> (form control), <kbd>T</kbd> (table),
+  <kbd>X</kbd> (list), <kbd>G</kbd> (image); add <kbd>Shift</kbd> to go back. <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>U</kbd> opens the rotor: <kbd>Left</kbd>/<kbd>Right</kbd>
+  for links, headings, form controls; type to filter; <kbd>Return</kbd> to go.</p>
+  <p class="expect">"heading level 3, Find practice"; "No next table" with a falling tone when there's none.</p>
+  <h3>Find practice</h3>
+  <ul>
+    <li><a href="#basics">Back to Moving and reading</a></li>
+    <li><a href="#tables">Jump to Tables</a></li>
+    <li><a href="#ask">Jump to Ask about the screen</a></li>
+  </ul>
+</section>
+
+<section id="units" aria-labelledby="units-h">
+  <h2 id="units-h">3. Words, characters, spelling</h2>
+  <p class="try">Focus the field, then <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>W</kbd> (word), <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>C</kbd> (character), <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>S</kbd> (sentence),
+  <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>P</kbd> (paragraph). Press <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>W</kbd> twice to spell, <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>C</kbd> twice for the phonetic letter.</p>
+  <p class="expect">"Accessibility"; "a, Alpha"; spelling "A, c, c, e, …".</p>
+  <div class="row"><label for="units-field">Practice text</label>
+    <input id="units-field" size="50" value="Accessibility matters. Screen readers read it aloud."></div>
+</section>
+
+<section id="controls" aria-labelledby="controls-h">
+  <h2 id="controls-h">4. Controls and their states</h2>
+  <p class="try"><kbd>Tab</kbd> through; <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Space</kbd> to press; type in the field (typing echo).</p>
+  <p class="expect">"Subscribe, unchecked, checkbox"; "Small, selected, radio button, 1 of 2"; "Newest, pop up button";
+  the disabled button "dimmed"; the field "blank, Nickname, required, text field" and each typed letter echoed.</p>
+  <div class="row"><button type="button">Save</button> <button type="button" disabled>Delete</button>
+    <button type="button" title="Sends the message now">Send</button></div>
+  <div class="row"><label><input type="checkbox"> Subscribe</label></div>
+  <fieldset><legend>Size</legend>
+    <label><input type="radio" name="size" checked> Small</label>
+    <label><input type="radio" name="size"> Large</label></fieldset>
+  <div class="row"><label for="sort">Sort</label>
+    <select id="sort"><option>Newest</option><option>Oldest</option><option>Price</option></select></div>
+  <div class="row"><label for="nick">Nickname</label> <input id="nick" required placeholder="What friends call you"></div>
+  <details><summary>More options</summary><p>Hidden until expanded.</p></details>
+</section>
+
+<section id="live" aria-labelledby="live-h">
+  <h2 id="live-h">5. Live updates and values</h2>
+  <p class="try">Move the slider with the arrow keys; press the two buttons.</p>
+  <p class="expect">The new value ("55"); "Saved 1 time" after current speech (polite); "Connection lost" at once (assertive).</p>
+  <div class="row"><label for="level">Level</label> <input id="level" type="range" min="0" max="100" value="50"></div>
+  <div class="row">
+    <button type="button" onclick="politeCount++; document.getElementById('polite').textContent = 'Saved ' + politeCount + (politeCount === 1 ? ' time' : ' times')">Save progress</button>
+    <button type="button" onclick="document.getElementById('urgent').textContent = 'Connection lost at ' + new Date().toLocaleTimeString()">Simulate an error</button>
+  </div>
+  <div id="polite" aria-live="polite"></div>
+  <div id="urgent" role="alert"></div>
+  <script>var politeCount = 0;</script>
+</section>
+
+<section id="tables" aria-labelledby="tables-h">
+  <h2 id="tables-h">6. Tables</h2>
+  <p class="try">Go to a table (<kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Cmd</kbd>+<kbd>T</kbd>), then <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd> to describe it;
+  <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>Down</kbd> to interact, <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+arrows by cell, <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>C</kbd> column header, <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>R</kbd> row.
+  Ask (<kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>/</kbd>): "Which plan is cheapest?", "How many plans include support?", "How much is Team per year?"</p>
+  <p class="expect">The small table read out in full; the plans table summarised (8 rows, the cheapest and dearest);
+  "Starter is cheapest, at $5 a month".</p>
+  <table>
+    <caption>Opening hours</caption>
+    <thead><tr><th>Day</th><th>Hours</th></tr></thead>
+    <tbody><tr><td>Weekdays</td><td>9 to 6</td></tr><tr><td>Saturday</td><td>10 to 2</td></tr><tr><td>Sunday</td><td>Closed</td></tr></tbody>
+  </table>
+  <table>
+    <caption>Plans</caption>
+    <thead><tr><th>Plan</th><th>Monthly</th><th>Yearly</th><th>Users</th><th>Support</th></tr></thead>
+    <tbody>
+      <tr><td>Starter</td><td>$5</td><td>$50</td><td>1</td><td>No</td></tr>
+      <tr><td>Personal</td><td>$9</td><td>$90</td><td>1</td><td>Email</td></tr>
+      <tr><td>Plus</td><td>$15</td><td>$150</td><td>2</td><td>Email</td></tr>
+      <tr><td>Family</td><td>$20</td><td>$200</td><td>6</td><td>Email</td></tr>
+      <tr><td>Team</td><td>$40</td><td>$400</td><td>10</td><td>Chat</td></tr>
+      <tr><td>Business</td><td>$80</td><td>$800</td><td>25</td><td>Chat</td></tr>
+      <tr><td>Enterprise</td><td>$200</td><td>$2,000</td><td>100</td><td>Phone</td></tr>
+      <tr><td>Unlimited</td><td>$400</td><td>$4,000</td><td>Any</td><td>Phone</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="reading" aria-labelledby="reading-h">
+  <h2 id="reading-h">7. Reading mode</h2>
+  <p class="try"><kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> anywhere on this page (or say "reading mode").</p>
+  <p class="expect">Reading starts at section 1 (the main content), skips the contents list (navigation), the
+  sidebar and the footer, reads links and text as prose, and says "Image: …" and "Video: …"; any key stops it.</p>
+  <article aria-labelledby="story-h">
+    <h3 id="story-h">A short article</h3>
+    <p>Reading mode is for long text. It leaves out the parts of a page that are not the content: menus,
+    banners, sidebars and footers, and it doesn't stop on every button.</p>
+    <p>It reads <a href="#ask">links inside a sentence</a> as part of the sentence, the way a person would.</p>
+  </article>
+</section>
+
+<section id="ask" aria-labelledby="ask-h">
+  <h2 id="ask-h">8. Ask about the screen</h2>
+  <p class="try"><kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> to summarise the page. <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>/</kbd> and type (or hold <kbd>Ctrl</kbd>+<kbd>Opt</kbd> and say):
+  "Where is the Save progress button?", "Is there a video?", "How many tables are there?", "Which fields are required?"
+  Then a follow-up: "What is the second one about?" <kbd>Up</kbd> in the box recalls earlier questions.</p>
+  <p class="expect">A tone, then the answer; "Thinking" only if it takes over 3 seconds. "Where is…" moves the
+  cursor there (then <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Space</kbd> presses it); "Is there a video?" says how many and lists them to choose from.</p>
+</section>
+
+<section id="media" aria-labelledby="media-h">
+  <h2 id="media-h">9. Videos, images and pictures</h2>
+  <p class="try">Ask "Is there a video?" or "Are there images?". Put the cursor on the chart or the sign and press
+  <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> to describe it (needs Screen Recording permission).</p>
+  <p class="expect">"2 videos" listed; the chart described ("a bar chart … sales rising from January to April");
+  the sign's words read out.</p>
+  <video controls width="320" height="180" aria-label="Welcome video, 30 seconds, with captions"></video>
+  <video controls width="320" height="180" aria-label="How to fill a form, 1 minute"></video>
+  <figure>
+    <svg role="img" aria-label="Sales chart" width="320" height="180" viewBox="0 0 320 180">
+      <rect width="320" height="180" fill="#ffffff"/>
+      <text x="160" y="22" text-anchor="middle" font-size="15" font-family="sans-serif" fill="#111">Sales, January to April</text>
+      <rect x="40" y="120" width="44" height="40" fill="#3366cc"/><rect x="110" y="95" width="44" height="65" fill="#3366cc"/>
+      <rect x="180" y="70" width="44" height="90" fill="#3366cc"/><rect x="250" y="40" width="44" height="120" fill="#3366cc"/>
+      <text x="62" y="174" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#111">Jan</text>
+      <text x="132" y="174" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#111">Feb</text>
+      <text x="202" y="174" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#111">Mar</text>
+      <text x="272" y="174" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#111">Apr</text>
+    </svg>
+    <figcaption>Figure 1: monthly sales.</figcaption>
+  </figure>
+  <svg role="img" aria-label="Sign" width="320" height="90" viewBox="0 0 320 90">
+    <rect width="320" height="90" rx="10" fill="#c62828"/>
+    <text x="160" y="56" text-anchor="middle" font-size="30" font-weight="700" font-family="sans-serif" fill="#fff">STAFF ONLY</text>
+  </svg>
+</section>
+
+<section id="unnamed" aria-labelledby="unnamed-h">
+  <h2 id="unnamed-h">10. Unlabelled controls</h2>
+  <p class="try">Move to the two icon buttons and the field after "Search the help pages".</p>
+  <p class="expect">"button", then a guessed name ("Send message, guessed name"; "Search, guessed name"); next
+  time the guess comes first at once.</p>
+  <div class="row"><label for="chat">Message</label> <textarea id="chat" rows="2" cols="40"></textarea>
+    <button type="button" id="send-message" class="icon-button"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><path d="M1 8 L15 1 L11 15 Z" fill="currentColor"/></svg></button></div>
+  <p>Search the help pages</p>
+  <div class="row"><input id="help-search" type="search">
+    <button type="button" id="help-search-go" class="icon-button"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 10 L15 15" stroke="currentColor" stroke-width="2"/></svg></button></div>
+</section>
+
+<section id="dictation" aria-labelledby="dictation-h">
+  <h2 id="dictation-h">11. Dictation</h2>
+  <p class="try">Focus a field, hold <kbd>Ctrl</kbd>+<kbd>Opt</kbd> (half a second), speak, release. In the email field say
+  "jane at example dot com", or spell it: "j a n e at example dot com". In the notes, say two sentences.</p>
+  <p class="expect">A rising tone, your words in the captions, a falling tone, the text inserted and read once.
+  The email comes out as an address (jane@example.com); the one-line field has no final full stop; the notes keep theirs.
+  Outside a text field (and the ask box), holding <kbd>Ctrl</kbd>+<kbd>Opt</kbd> does nothing, however long.</p>
+  <div class="row"><label for="dict-email">Email for dictation</label> <input id="dict-email" type="email" size="32"></div>
+  <div class="row"><label for="dict-city">Favourite city</label> <input id="dict-city" size="32"></div>
+  <div class="row"><label for="dict-notes">Notes</label> <textarea id="dict-notes" rows="3" cols="40"></textarea></div>
+</section>
+
+<section id="voice" aria-labelledby="voice-h">
+  <h2 id="voice-h">12. Voice commands</h2>
+  <p class="try">Open the ask box (<kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>/</kbd>), then hold <kbd>Ctrl</kbd>+<kbd>Opt</kbd> and say (or type):</p>
+  <ul>
+    <li>"Change speech rate to 60", "Speak faster", "Volume 80", "Verbosity low"</li>
+    <li>"Make the captions high contrast yellow and blue", "Make the captions bigger", "Reset caption colors"</li>
+    <li>"Turn off hints", "Hide the captions", "Turn the cursor on"</li>
+    <li>"Go to the nickname field", "Press Save progress", "Press Delete account" (risky: only moves there)</li>
+    <li>"Reading mode", "Describe this table", "Check before sending", "Audit this page", "Fill this form", "Open settings"</li>
+  </ul>
+  <p class="expect">Settings change and are confirmed ("Rate 60"; "Captions: yellow on blue, contrast 9.5 to 1");
+  "Press Save progress" presses it and you hear "Saved 1 time"; "Delete account" is not pressed.</p>
+  <div class="row"><button type="button">Delete account</button></div>
+</section>
+
+<section id="fill" aria-labelledby="fill-h">
+  <h2 id="fill-h">13. Fill this form</h2>
+  <p class="try">First add your details in Settings › Your details. Put the cursor in this form (for example on First
+  name), then <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> (or say "fill this form").
+  While the plan is shown, hold <kbd>Ctrl</kbd>+<kbd>Opt</kbd> and say "delivery notes, leave it at the door". <kbd>Return</kbd> fills,
+  <kbd>Escape</kbd> cancels.</p>
+  <p class="expect">"I can fill 8 fields: First name, …; … Not filled: Delivery notes, Promo code." After the dictation,
+  delivery notes added. After Return, each field read back and "Not submitted". The password and promo code stay empty.</p>
+  <form onsubmit="alert('This form should never be submitted by Lumen Reader.'); return false;">
+    <div class="row"><label for="f-first">First name</label> <input id="f-first" autocomplete="off"></div>
+    <div class="row"><label for="f-last">Last name</label> <input id="f-last" autocomplete="off"></div>
+    <div class="row"><label for="f-email">Email address</label> <input id="f-email" type="email" autocomplete="off"></div>
+    <div class="row"><label for="f-phone">Phone</label> <input id="f-phone" type="tel" autocomplete="off"></div>
+    <div class="row"><label for="f-street">Street address</label> <input id="f-street" autocomplete="off"></div>
+    <div class="row"><label for="f-city">City</label> <input id="f-city" autocomplete="off"></div>
+    <div class="row"><label for="f-zip">ZIP code</label> <input id="f-zip" autocomplete="off"></div>
+    <div class="row"><label for="f-country">Country</label> <input id="f-country" autocomplete="off"></div>
+    <div class="row"><label for="f-password">Choose a password</label> <input id="f-password" type="password" autocomplete="new-password"></div>
+    <div class="row"><label for="f-promo">Promo code</label> <input id="f-promo" autocomplete="off"></div>
+    <div class="row"><label for="f-notes">Delivery notes</label> <textarea id="f-notes" rows="2" cols="40"></textarea></div>
+    <button type="submit">Place order</button>
+  </form>
+</section>
+
+<section id="send" aria-labelledby="send-h">
+  <h2 id="send-h">14. Check before sending</h2>
+  <p class="try"><kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd> (or say "check before sending").</p>
+  <p class="try">Put the cursor in this form first (for example on the To field), so the check is about it.</p>
+  <p class="expect">"3 things to check": To is required and empty; a typo ("recieve", maybe "receive"); the message
+  says something is attached, but nothing is. Each in a list to jump to. Fill the To field, fix the typo and
+  remove "attached" to hear "Looks ready to send."</p>
+  <div class="row"><label for="s-to">To</label> <input id="s-to" type="email" required></div>
+  <div class="row"><label for="s-subject">Subject</label> <input id="s-subject" value="Quarterly report"></div>
+  <div class="row"><label for="s-body">Message</label>
+    <textarea id="s-body" rows="4" cols="50">Hi Sam, please let me know when you recieve the report. I have attached the spreadsheet too.</textarea></div>
+  <button type="button">Send</button>
+</section>
+
+<section id="pronounce" aria-labelledby="pronounce-h">
+  <h2 id="pronounce-h">15. Pronunciation</h2>
+  <p class="try">Read these lines with <kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Right</kbd>. Add your own word in Settings › Pronunciation and read the last line again.</p>
+  <p class="expect">"version 2 point 1 point 3"; "1.2 million dollars"; "S Q L", "P D F", "H T M L"; NASA and WCAG said as words;
+  "NEW ARRIVALS" not spelled out. The captions keep the text as written.</p>
+  <p>Update to v2.1.3 today; release 10.4.1 is out.</p>
+  <p>The startup raised $1.2M; the budget is €3K.</p>
+  <p>Export the SQL query as a PDF and the page as HTML and CSS.</p>
+  <p>NASA follows WCAG. NEW ARRIVALS this week.</p>
+  <p>Marcelo Paiva wrote this page.</p>
+</section>
+
+<section id="apps" aria-labelledby="apps-h">
+  <h2 id="apps-h">16. Apps, windows and settings</h2>
+  <p class="try">Hold <kbd>Cmd</kbd> and press <kbd>Tab</kbd> a few times; release to switch. Open a new window.
+  Choose Settings… in the menu-bar menu (<kbd>Cmd</kbd>+<kbd>,</kbd>) and change something.
+  Drag the caption panel anywhere, including another display; press its ✕ to quit (it says "Closing Lumen Reader").</p>
+  <p class="expect">Each app named as you Tab ("Slack, 2 of 11"), then the app, window and focused item; the settings
+  window read like any app, its changes applied at once.</p>
+</section>
+
+<section id="audit" aria-labelledby="audit-h">
+  <h2 id="audit-h">17. Accessibility audit (mistakes on purpose)</h2>
+  <p class="try"><kbd>Ctrl</kbd>+<kbd>Opt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> (or say "audit this page").</p>
+  <p class="expect">A spoken summary, an Issues list to jump to, and a report in Documents › Lumen Reader Audits. It
+  should find everything planted below (other sections may add a few, such as the unlabelled buttons in section 10):</p>
+  <ul>
+    <li>A heading that skips a level (level 4 after level 2) — 1.3.1</li>
+    <li>An image with no description — 1.1.1</li>
+    <li>A button with no name and a field with no label — 4.1.2, 1.3.1</li>
+    <li>Links that say only "click here" and "read more" — 2.4.4</li>
+    <li>Two links both called "Report" going to different places — 2.4.4</li>
+    <li>Tiny buttons packed together — 2.5.8</li>
+  </ul>
+  <div class="warn">
+    <h4>Skipped level heading</h4>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='40'%3E%3Crect width='60' height='40' fill='%23999'/%3E%3C/svg%3E" width="60" height="40">
+    <div class="row"><button type="button"><svg aria-hidden="true" width="14" height="14"><circle cx="7" cy="7" r="6" fill="currentColor"/></svg></button>
+      <input aria-hidden="false" size="10"></div>
+    <p>To see the details, <a href="#audit">click here</a>. Or <a href="#send">read more</a>.</p>
+    <p><a href="#tables">Report</a> for March and <a href="#media">Report</a> for April.</p>
+    <div class="row" aria-label="Rating">
+      <button type="button" class="tiny">1</button><button type="button" class="tiny">2</button><button type="button" class="tiny">3</button><button type="button" class="tiny">4</button><button type="button" class="tiny">5</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<aside aria-label="Sidebar">
+  <h2>Sidebar</h2>
+  <p>Reading mode skips this sidebar. It holds things that are not the main content.</p>
+</aside>
+
+<footer>
+  <p>Lumen Reader feature tour · the footer, which reading mode skips · <a href="#basics">Back to the top</a></p>
+</footer>
+
+</body>
+</html>

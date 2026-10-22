@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumen Reader</title>
+<meta name="description" content="A screen reader for macOS with on-device AI that never leaves your Mac. Free and open source.">
+<link rel="canonical" href="https://mpaiva.github.io/lumen-reader-site/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mpaiva.github.io/lumen-reader-site/">
+<meta property="og:title" content="Lumen Reader">
+<meta property="og:description" content="A screen reader for macOS with on-device AI that never leaves your Mac.">
+<meta property="og:image" content="https://mpaiva.github.io/lumen-reader-site/assets/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Lumen Reader icon beside the words: A screen reader for macOS, with on-device AI.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#34196b">
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light dark;
+    --violet: #34196b;
+    --violet-top: #3e1b86;
+    --indigo: #261470;
+    --blue: #1f2c78;
+    --fg: #1a1625;
+    --muted: #4d4760;
+    --bg: #fbfaff;
+    --surface: #ffffff;
+    --tint: #f1edfb;
+    --line: #dcd5ee;
+    --accent: #5a2fc2;
+    --focus: #5a2fc2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fg: #eeeaf7;
+      --muted: #b8b0cc;
+      --bg: #110c1d;
+      --surface: #1a1429;
+      --tint: #221a36;
+      --line: #3a3052;
+      --accent: #c5b2ff;
+      --focus: #c5b2ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    font: 18px/1.6 "Public Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3 { line-height: 1.2; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(28px, 4vw, 38px); margin: 0 0 12px; }
+  h3 { font-size: 20px; margin: 0 0 6px; }
+  p { margin: 0 0 14px; }
+  kbd {
+    font: 600 0.82em ui-monospace, "SF Mono", Menlo, monospace;
+    border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px;
+    padding: 1px 6px; background: var(--surface); white-space: nowrap;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 640px) { .wrap { padding: 0 32px; } }
+
+  .skip { position: absolute; left: 16px; top: -60px; background: var(--surface); color: var(--fg); padding: 10px 14px; border-radius: 8px; z-index: 10; }
+  .skip:focus { top: 12px; }
+
+  /* Header */
+  .site-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; padding-bottom: 18px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--fg); text-decoration: none; font-size: 19px; }
+  .brand img { width: 36px; height: 36px; }
+  .site-header nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font-weight: 500; font-size: 16px; }
+  .site-header nav a { color: var(--fg); text-decoration: none; }
+  .site-header nav a:hover { color: var(--accent); text-decoration: underline; }
+  @media (max-width: 720px) { .site-header nav li:not(:last-child) { display: none; } }
+
+  /* Hero */
+  .hero { padding-top: 40px; padding-bottom: 72px; text-align: center; }
+  .hero .icon { width: 128px; height: 128px; filter: drop-shadow(0 14px 28px rgba(52, 25, 107, 0.35)); }
+  .hero h1 { font-size: clamp(40px, 7vw, 68px); margin: 18px 0 14px; font-weight: 700; }
+  .hero .lede { font-size: clamp(19px, 2.4vw, 23px); color: var(--muted); max-width: 680px; margin: 0 auto 30px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .button {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; border-radius: 999px;
+    font-weight: 600; text-decoration: none; font-size: 17px; border: 2px solid transparent;
+  }
+  .button.primary { background: linear-gradient(180deg, var(--violet-top), var(--indigo)); color: #fff; box-shadow: 0 6px 18px rgba(52, 25, 107, 0.3); }
+  .button.primary:hover { background: linear-gradient(180deg, #4a22a0, #2c1680); }
+  .button.secondary { color: var(--fg); border-color: var(--line); background: var(--surface); }
+  .button.secondary:hover { border-color: var(--accent); }
+  .fine { color: var(--muted); font-size: 15px; margin-top: 16px; }
+
+  /* Caption panel demo */
+  .demo { margin: 52px auto 0; max-width: 640px; }
+  .panel {
+    background: linear-gradient(180deg, var(--violet-top), var(--violet) 55%, var(--indigo));
+    color: #fff; border-radius: 22px; padding: 22px 26px; text-align: left;
+    box-shadow: 0 24px 60px rgba(38, 20, 112, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    font-size: clamp(20px, 3vw, 26px); font-weight: 500; min-height: 92px;
+  }
+  .panel .label { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #cfc4ec; margin-bottom: 6px; }
+  .panel .word { border-radius: 6px; padding: 0 3px; transition: background 0.15s, color 0.15s; }
+  .panel .word.now { background: #fff; color: #000; }
+  .panel.working { animation: drift 3s ease-in-out infinite alternate; background-size: 100% 200%; background-image: linear-gradient(180deg, var(--violet), var(--blue), var(--violet)); }
+  @keyframes drift { from { background-position: 0 0; } to { background-position: 0 100%; } }
+  @media (prefers-reduced-motion: reduce) { .panel.working { animation: none; } }
+  .demo-controls { margin-top: 14px; display: flex; justify-content: center; }
+  .demo-controls button {
+    font: inherit; font-size: 15px; font-weight: 600; color: var(--fg); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 999px; padding: 6px 16px; cursor: pointer;
+  }
+  .demo-controls button:hover { border-color: var(--accent); }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  section.alt { background: var(--tint); }
+  .section-intro { max-width: 680px; color: var(--muted); font-size: 19px; margin-bottom: 36px; }
+  .eyebrow { display: block; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); list-style: none; padding: 0; margin: 0; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 18px; }
+  .card p { color: var(--muted); font-size: 16.5px; margin-bottom: 10px; }
+  .card .keys { font-size: 15px; color: var(--muted); }
+
+  .split { display: grid; gap: 40px; grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 860px) { .split { grid-template-columns: 1fr 1fr; } }
+
+  .privacy-points { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  .privacy-points li { display: flex; gap: 14px; align-items: flex-start; }
+  .privacy-points svg { flex: none; width: 26px; height: 26px; margin-top: 2px; color: var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 16px; background: var(--surface); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+  caption { text-align: left; font-weight: 600; padding-bottom: 8px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child th, tr:last-child td { border-bottom: none; }
+  thead th { background: var(--tint); font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  tbody th { font-weight: 500; }
+  .table-scroll { overflow-x: auto; }
+
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .steps li { counter-increment: step; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .steps li::before {
+    content: counter(step); display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--violet); color: #fff; font-weight: 700; margin-bottom: 12px;
+  }
+  .steps p { color: var(--muted); font-size: 16.5px; margin: 0; }
+  .note { margin-top: 24px; padding: 16px 20px; border-left: 4px solid var(--accent); background: var(--surface); border-radius: 0 12px 12px 0; color: var(--muted); font-size: 16.5px; }
+
+  .checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .checks li { padding-left: 30px; position: relative; }
+  .checks li::before {
+    content: ""; position: absolute; left: 4px; top: 0.45em; width: 12px; height: 7px;
+    border-left: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent); transform: rotate(-45deg);
+  }
+  .report { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: 0 18px 40px rgba(52, 25, 107, 0.12); }
+  .report figcaption { font-weight: 700; font-size: 20px; margin-bottom: 6px; }
+  .report-summary { font-weight: 600; font-size: 16px; }
+  .report table { border-radius: 10px; font-size: 15px; }
+  .report td:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .report-foot { color: var(--muted); font-size: 14px; margin: 12px 0 0; }
+
+  .faq { max-width: 780px; display: grid; gap: 12px; }
+  .faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+  .faq summary { cursor: pointer; font-weight: 600; padding: 16px 20px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--accent); }
+  .faq details[open] summary::after { content: "−"; }
+  .faq details p { padding: 0 20px 18px; margin: 0; color: var(--muted); font-size: 16.5px; }
+
+  .cta { text-align: center; }
+  .cta .panel { max-width: 720px; margin: 0 auto; text-align: center; padding: 44px 28px; }
+  .cta h2 { color: #fff; }
+  .cta p { color: #ddd5f3; font-size: 18px; font-weight: 400; }
+  .cta .button.primary { background: #fff; color: var(--violet); box-shadow: none; }
+  .cta .button.primary:hover { background: #ece6fb; }
+  .cta .button.secondary { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.45); }
+  .cta .button.secondary:hover { border-color: #fff; }
+  .cta :focus-visible { outline-color: #fff; }
+
+  footer { padding: 36px 0 48px; color: var(--muted); font-size: 15px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; }
+  footer ul { display: flex; flex-wrap: wrap; gap: 18px; list-style: none; margin: 0; padding: 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="wrap site-header">
+  <a class="brand" href="#top"><img src="assets/icon.png" alt="">Lumen Reader</a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#private">Privacy</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="https://github.com/mpaiva/lumen-reader-site/releases">Releases</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="wrap hero" id="top">
+    <img class="icon" src="assets/icon.png" alt="">
+    <h1>Lumen Reader</h1>
+    <p class="lede">A screen reader for macOS that can also answer questions about your screen, take dictation, fill forms and describe pictures. All of it runs on your Mac.</p>
+    <div class="actions">
+      <a class="button primary" href="https://github.com/mpaiva/lumen-reader-site/releases/latest">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>
+        Download for Mac
+      </a>
+      <a class="button secondary" href="feature-tour.html">Take the feature tour</a>
+    </div>
+    <p class="fine">Free and open source · macOS 14 or later · Ctrl+Opt keys, the same as VoiceOver's</p>
+
+    <figure class="demo" aria-label="Example of the caption panel">
+      <div class="panel" id="panel">
+        <span class="label" id="panel-label">Caption panel</span>
+        <span id="panel-text"></span>
+      </div>
+      <div class="demo-controls">
+        <button type="button" id="demo-toggle" aria-pressed="false">Pause example</button>
+      </div>
+    </figure>
+  </div>
+
+  <section id="features" class="alt" aria-labelledby="features-h">
+    <div class="wrap">
+      <span class="eyebrow">Reading</span>
+      <h2 id="features-h">Hear every control clearly</h2>
+      <p class="section-intro">Lumen Reader follows keyboard focus and says what each control is called, its state and its type, for example "Subscribe, unchecked, checkbox". It runs from the menu bar.</p>
+      <ul class="grid">
+        <li class="card">
+          <h3>Its own cursor</h3>
+          <p>Move item by item with a cursor drawn on screen. The page scrolls to keep it in view.</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> + arrows</p>
+        </li>
+        <li class="card">
+          <h3>Find and the rotor</h3>
+          <p>Jump to the next heading, link, form control, table, list or image, or list them all, type to filter and go.</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>U</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Tables</h3>
+          <p>Move by cell and hear the column header or the whole row. Ask a question like "Which plan is cheapest?"</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>T</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Reading mode</h3>
+          <p>Hear just the main content as prose, without the menus, banners, sidebars and footers.</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>R</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Paragraph to letter</h3>
+          <p>Read a paragraph, sentence, word or character, spell a word or hear phonetic letters.</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>P</kbd> / <kbd>S</kbd> / <kbd>W</kbd> / <kbd>C</kbd></p>
+        </li>
+        <li class="card">
+          <h3>A caption panel</h3>
+          <p>Shows everything spoken and highlights each word as it's said. Drag it anywhere, on any display.</p>
+          <p class="keys">High contrast colours in Settings</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="ai-h">
+    <div class="wrap">
+      <span class="eyebrow">On-device AI</span>
+      <h2 id="ai-h">Ask about the screen. Just say it.</h2>
+      <p class="section-intro">Type a question or hold <kbd>Ctrl</kbd> <kbd>Opt</kbd> and ask it out loud, for example "Where is the search field?" The cursor moves to the item the answer is about.</p>
+      <ul class="grid">
+        <li class="card">
+          <h3>Ask and summarise</h3>
+          <p>Get a summary of the screen, or ask questions with follow-ups like "What is the second one about?"</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>/</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Voice commands</h3>
+          <p>"Change speech rate to 60", "turn off hints", "press Save draft", "open Safari".</p>
+          <p class="keys">Hold <kbd>Ctrl</kbd> <kbd>Opt</kbd> in the ask box</p>
+        </li>
+        <li class="card">
+          <h3>Dictation</h3>
+          <p>In a text field, hold <kbd>Ctrl</kbd> <kbd>Opt</kbd>, speak, then let go. Your words are typed in.</p>
+          <p class="keys">Recognised on your Mac</p>
+        </li>
+        <li class="card">
+          <h3>Describe pictures</h3>
+          <p>Hear a description of the image, video frame or chart under the cursor.</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>L</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Fill and check forms</h3>
+          <p>Fill empty fields from your saved details or what you say, after hearing the plan. It never submits. Before you send, it catches empty required fields, typos and a missing attachment.</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>F</kbd> / <kbd>C</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Names for unlabelled buttons</h3>
+          <p>A button with no name gets a guessed one from the text around it, and Lumen Reader tells you it's a guess.</p>
+          <p class="keys">"Send message, guessed name"</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="private" class="alt" aria-labelledby="private-h">
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">Privacy</span>
+        <h2 id="private-h">What you ask stays on your Mac</h2>
+        <p class="section-intro">The AI features use only what's built into macOS: Apple's on-device language model, speech recognition and Vision.</p>
+        <ul class="privacy-points">
+          <li>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <span><strong>No network requests.</strong> Nothing you ask, say or show leaves your Mac.</span>
+          </li>
+          <li>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+            <span><strong>Nothing to set up.</strong> No AI provider, no account and no API key.</span>
+          </li>
+          <li>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M12 4v16"/></svg>
+            <span><strong>Works without AI too.</strong> Moving and reading, find, the rotor, tables, captions, Check before sending and the accessibility audit work on any supported Mac.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <caption>What the AI features need</caption>
+          <thead><tr><th scope="col">Feature</th><th scope="col">Needs</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Ask, summarise, guessed names</th><td>macOS 26 with Apple Intelligence on</td></tr>
+            <tr><th scope="row">Dictation and voice commands</th><td>macOS 26 and Microphone permission</td></tr>
+            <tr><th scope="row">Describe a picture</th><td>macOS 27 with Apple Intelligence on, and Screen Recording permission</td></tr>
+            <tr><th scope="row">Text in a picture</th><td>Screen Recording permission</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="audit-h">
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">For builders</span>
+        <h2 id="audit-h">Audit any page or app</h2>
+        <p class="section-intro">Press <kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>A</kbd> on any page or app. Lumen Reader checks it from the accessibility tree, the way a screen reader sees it, says a summary and saves a report with WCAG references.</p>
+        <ul class="checks">
+          <li>Controls and fields with no name or label</li>
+          <li>Images with no description</li>
+          <li>Vague or ambiguous links</li>
+          <li>Missing or skipped heading levels</li>
+          <li>Targets under 24 points that are too close together</li>
+          <li>A missing page title</li>
+        </ul>
+      </div>
+      <figure class="report" aria-labelledby="report-cap">
+        <figcaption id="report-cap"><span class="eyebrow">Example report</span>Accessibility audit: Checkout</figcaption>
+        <p class="report-summary">5 issues: Name 2, Heading levels 1, Image description 1, Link purpose 1.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th scope="col">Problem</th><th scope="col">WCAG</th></tr></thead>
+            <tbody>
+              <tr><td>A button has no name.</td><td>4.1.2</td></tr>
+              <tr><td>A checkbox has no name.</td><td>4.1.2</td></tr>
+              <tr><td>An image has no description.</td><td>1.1.1</td></tr>
+              <tr><td>A link says only “click here”.</td><td>2.4.4</td></tr>
+              <tr><td>A level 4 heading follows a level 2 heading (level 3 skipped): “Delivery”.</td><td>1.3.1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="report-foot">Colour contrast, keyboard traps and caption quality still need a person, or other tools, to check.</p>
+      </figure>
+    </div>
+  </section>
+
+  <section id="faq" class="alt" aria-labelledby="faq-h">
+    <div class="wrap">
+      <span class="eyebrow">Questions</span>
+      <h2 id="faq-h">Good to know</h2>
+      <div class="faq">
+        <details>
+          <summary>Does it replace VoiceOver?</summary>
+          <p>No. Lumen Reader is an experiment and a learning tool. It doesn't have braille or trackpad gestures yet. Both can run at once: while VoiceOver is on, Lumen Reader passes every key through to it.</p>
+        </details>
+        <details>
+          <summary>Will the keys feel familiar?</summary>
+          <p>Yes, if you use VoiceOver. Commands use <kbd>Ctrl</kbd> <kbd>Opt</kbd>, the keys VoiceOver calls VO, and moving, finding and the rotor work much the same way. Turn Lumen Reader off or on with <kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Cmd</kbd> <kbd>S</kbd>. The <a href="feature-tour.html">feature tour</a> has every key on one page.</p>
+        </details>
+        <details>
+          <summary>Does it need an internet connection or an account?</summary>
+          <p>No. Lumen Reader makes no network requests. The AI features use Apple's on-device model, speech recognition and Vision, so there's no AI provider, account or API key.</p>
+        </details>
+        <details>
+          <summary>Which Macs can run it?</summary>
+          <p>Any Mac with macOS 14 or later. Asking about the screen, dictation and voice commands need macOS 26 and a Mac with Apple Intelligence (Apple silicon, M1 or later). Describing pictures needs macOS 27.</p>
+        </details>
+        <details>
+          <summary>Why does macOS warn me about the installer?</summary>
+          <p>The installer isn't signed with an Apple Developer ID or notarised yet. Choose Done, then go to System Settings › Privacy &amp; Security and click Open Anyway next to the message about the installer.</p>
+        </details>
+        <details>
+          <summary>Which apps does it work with?</summary>
+          <p>Any app that uses Apple's accessibility APIs. It's tested in Safari, Chrome, TextEdit and the Cmd+Tab switcher. In Safari, finding headings and links uses WebKit's own search, so it's fast on long pages.</p>
+        </details>
+        <details>
+          <summary>How do I uninstall it?</summary>
+          <p>Open the installer again and choose Customize › Uninstall Lumen Reader. That removes the app, its settings and its permission entry.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" aria-labelledby="install-h">
+    <div class="wrap">
+      <span class="eyebrow">Install</span>
+      <h2 id="install-h">Running in a few minutes</h2>
+      <ol class="steps">
+        <li>
+          <h3>Download</h3>
+          <p>Get the <code>.pkg</code> from the <a href="https://github.com/mpaiva/lumen-reader-site/releases/latest">latest release</a> and open it. It installs into Applications and starts.</p>
+        </li>
+        <li>
+          <h3>Allow the installer</h3>
+          <p>The installer isn't notarised yet. If macOS warns you, choose Done, then click <strong>Open Anyway</strong> in System Settings › Privacy &amp; Security.</p>
+        </li>
+        <li>
+          <h3>Turn on Accessibility</h3>
+          <p>From the menu bar icon, choose <strong>Open Accessibility Settings…</strong> and turn on Lumen Reader. You'll hear "Lumen Reader on".</p>
+        </li>
+      </ol>
+      <p class="note">Each <a href="https://github.com/mpaiva/lumen-reader-site/releases">release</a> says what's new. Already installed? The installer tells you which version you have, and continuing upgrades it.</p>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-h">
+    <div class="wrap">
+      <div class="panel">
+        <h2 id="cta-h">Try Lumen Reader</h2>
+        <p>Free, open source and private by design.</p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/mpaiva/lumen-reader-site/releases/latest">Download for Mac</a>
+          <a class="button secondary" href="feature-tour.html">Take the feature tour</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Lumen Reader by Marcelo Paiva. Built on Apple's public accessibility APIs.</p>
+    <ul>
+      <li><a href="feature-tour.html">Feature tour</a></li>
+      <li><a href="https://github.com/mpaiva/lumen-reader-site/releases">Releases</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // The caption panel example: each line is shown with the current word highlighted, as the app does.
+  (function () {
+    const lines = [
+      { label: "Caption panel", text: "Subscribe, unchecked, checkbox" },
+      { label: "Caption panel", text: "Pricing, heading level 2" },
+      { label: "You asked", text: "Where is the search field?", working: true },
+      { label: "Caption panel", text: "Search, search text field" },
+      { label: "Caption panel", text: "Send message, guessed name, button" }
+    ];
+    const panel = document.getElementById("panel");
+    const label = document.getElementById("panel-label");
+    const out = document.getElementById("panel-text");
+    const toggle = document.getElementById("demo-toggle");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let line = 0, word = 0, timer = null, paused = false;
+
+    function render() {
+      const { text, working } = lines[line];
+      label.textContent = lines[line].label;
+      panel.classList.toggle("working", !!working);
+      out.textContent = "";
+      text.split(" ").forEach((w, i) => {
+        const span = document.createElement("span");
+        span.className = "word" + (!reduce && i === word ? " now" : "");
+        span.textContent = w;
+        out.append(span, i < text.split(" ").length - 1 ? " " : "");
+      });
+    }
+    function tick() {
+      const count = lines[line].text.split(" ").length;
+      if (reduce || word >= count - 1) {
+        line = (line + 1) % lines.length; word = 0;
+        render(); timer = setTimeout(tick, reduce ? 3200 : 900);
+      } else {
+        word++; render(); timer = setTimeout(tick, word === count - 1 ? 1300 : 320);
+      }
+    }
+    toggle.addEventListener("click", () => {
+      paused = !paused;
+      toggle.setAttribute("aria-pressed", String(paused));
+      toggle.textContent = paused ? "Play example" : "Pause example";
+      if (paused) clearTimeout(timer); else timer = setTimeout(tick, 300);
+    });
+    render();
+    timer = setTimeout(tick, 900);
+  })();
+</script>
+</body>
+</html>
