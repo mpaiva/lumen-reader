@@ -185,6 +185,9 @@
   .faq summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--accent); }
   .faq details[open] summary::after { content: "−"; }
   .faq details p { padding: 0 20px 18px; margin: 0; color: var(--muted); font-size: 16.5px; }
+  .faq details p + p { margin-top: -6px; }
+  .faq h3 { margin: 18px 0 2px; }
+  .faq h3:first-child { margin-top: 0; }
 
   .cta { text-align: center; }
   .cta .panel { max-width: 720px; margin: 0 auto; text-align: center; padding: 44px 28px; }
@@ -357,7 +360,7 @@
     <div class="wrap">
       <span class="eyebrow">Companion window</span>
       <h2 id="companion-h">Take in your whole Mac at a glance</h2>
-      <p class="section-intro">A sighted person looks over the screen in a second: what's open, what needs them, where things are. The companion window gives you the same overview in a window you move through with Lumen Reader. Open it from the Dock icon, or press <kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>G</kbd> twice.</p>
+      <p class="section-intro">A sighted person looks over the screen in a second: what's open, what needs them, where things are. The companion window gives you the same overview, in a window you move through with Lumen Reader or with VoiceOver. Open it from the Dock icon, or with Lumen Reader press <kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>G</kbd> twice. <a href="#faq">Using it with VoiceOver</a></p>
       <div class="shots">
         <figure class="shot-wide">
           <picture>
@@ -484,10 +487,33 @@
       <span class="eyebrow">Questions</span>
       <h2 id="faq-h">Good to know</h2>
       <div class="faq">
+        <h3>If you use VoiceOver</h3>
         <details>
           <summary>Does it replace VoiceOver?</summary>
-          <p>No. Lumen Reader is an experiment and a learning tool. It doesn't support braille displays or trackpad gestures yet, though a braille panel shows on screen what a display would. You can keep both installed: while VoiceOver is on, Lumen Reader pauses and stays quiet. Press <kbd>Cmd</kbd> <kbd>F5</kbd> to turn VoiceOver off and Lumen Reader takes over; press it again to go back. The companion window works with VoiceOver too.</p>
+          <p>No, and you don't have to choose. Lumen Reader is an experiment and a learning tool: it doesn't support braille displays or trackpad gestures yet, though a braille panel shows on screen what a display would. Keep VoiceOver as your screen reader and use the companion window alongside it, or switch to Lumen Reader when you want to try it.</p>
         </details>
+        <details>
+          <summary>Can I use the companion window with VoiceOver, without Lumen Reader reading?</summary>
+          <p>Yes. While VoiceOver is on, Lumen Reader pauses and stays quiet, and the companion window is an ordinary Mac window that VoiceOver reads like any other. Open it from the Dock icon or with <kbd>Cmd</kbd> <kbd>Tab</kbd>. <kbd>Cmd</kbd> <kbd>1</kbd> to <kbd>Cmd</kbd> <kbd>6</kbd> go to its sections, and each one lands on a short summary that VoiceOver reads at once. <kbd>Cmd</kbd> <kbd>R</kbd> looks again and <kbd>Cmd</kbd> <kbd>W</kbd> closes it. Its headings are marked as headings, with levels, for VoiceOver's rotor and heading keys.</p>
+        </details>
+        <details>
+          <summary>What does the companion add to VoiceOver?</summary>
+          <p>VoiceOver reads the window you're in, one item at a time. The companion gives you the whole Mac at once, the way a sighted person takes it in with a glance.</p>
+          <p><strong>Glance</strong> says where you are, what needs you (open dialogs, unread badges) and every open window, most important first. <strong>Activity</strong> keeps what happened while you were busy: notification banners that vanish after a few seconds, alerts, and apps that came forward, for a day, with a search. <strong>Ask about your Mac</strong> answers questions like "Which Finder windows are open?" in plain words. <strong>Layout</strong> says where things are on each display and what's hidden behind what. Every window and app it mentions has a Go to button that brings it forward, so you can go straight there.</p>
+        </details>
+        <details>
+          <summary>What keeps working in the background while VoiceOver is on?</summary>
+          <p>Lumen Reader keeps running, quietly. It keeps recording Activity, so the companion is up to date whenever you open it, and watches you've set keep watching. Because VoiceOver only speaks for the app in front, a watch that finishes while VoiceOver is on doesn't speak: it's listed in Activity and under Told you in the Watch section instead. Your Make it mine rules change how Lumen Reader speaks, so they wait until you switch to it.</p>
+        </details>
+        <details>
+          <summary>How do I switch between VoiceOver and Lumen Reader?</summary>
+          <p>Press <kbd>Cmd</kbd> <kbd>F5</kbd>, the same key that turns VoiceOver on and off. When VoiceOver goes off, Lumen Reader plays a short rising tone and takes over where you are: "Lumen Reader on", then the item you're on. Press <kbd>Cmd</kbd> <kbd>F5</kbd> again to go back. You can also choose Switch to Lumen Reader in the companion window, or say or type "switch to VoiceOver" in Lumen Reader's ask box. The first two times you switch, Lumen Reader also reminds you how to switch back.</p>
+        </details>
+        <details>
+          <summary>Does Ask about your Mac need anything extra?</summary>
+          <p>It uses Apple's on-device model, so it needs macOS 26 with Apple Intelligence on, like the rest of Lumen Reader's AI features. Glance, Activity, Watch and Layout work on any supported Mac, with VoiceOver or with Lumen Reader.</p>
+        </details>
+        <h3>Everything else</h3>
         <details>
           <summary>Will the keys feel familiar?</summary>
           <p>Yes, if you use VoiceOver. Commands use <kbd>Ctrl</kbd> <kbd>Opt</kbd>, the keys VoiceOver calls VO, and moving, finding and the rotor work much the same way. Turn Lumen Reader off or on with <kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Cmd</kbd> <kbd>S</kbd>. The <a href="feature-tour.html">feature tour</a> has every key on one page.</p>
@@ -502,7 +528,7 @@
         </details>
         <details>
           <summary>What is the Dock icon for?</summary>
-          <p>It opens the companion window: a glance at your Mac, recent activity, questions about your Mac, watches, your rules and where things are on your screens. Lumen Reader keeps reading while the window is closed; <kbd>Cmd</kbd> <kbd>W</kbd> closes it.</p>
+          <p>It opens the companion window: a glance at your Mac, recent activity, questions about your Mac, watches, your rules and where things are on your screens. It works with VoiceOver or with Lumen Reader. Lumen Reader keeps running while the window is closed; <kbd>Cmd</kbd> <kbd>W</kbd> closes it.</p>
         </details>
         <details>
           <summary>Which apps does it work with?</summary>
