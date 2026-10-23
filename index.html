@@ -127,6 +127,14 @@
   .section-intro { max-width: 680px; color: var(--muted); font-size: 19px; margin-bottom: 36px; }
   .eyebrow { display: block; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
 
+  .shots { display: grid; gap: 28px; grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 860px) { .shots { grid-template-columns: 1.1fr 1fr; } .shot-wide { grid-column: 1 / -1; } }
+  .shots figure { margin: 0; }
+  .shots img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(52, 25, 107, 0.14); background: #1a1a1a; }
+  .shots figcaption { color: var(--muted); font-size: 16px; margin-top: 10px; }
+  .shots figcaption strong { color: var(--fg); }
+  .shot-side { display: grid; gap: 28px; }
+
   .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); list-style: none; padding: 0; margin: 0; }
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 18px; }
   .card p { color: var(--muted); font-size: 16.5px; margin-bottom: 10px; }
@@ -231,6 +239,41 @@
       </div>
     </figure>
   </div>
+
+  <section id="see-it" aria-labelledby="see-h">
+    <div class="wrap">
+      <span class="eyebrow">See it</span>
+      <h2 id="see-h">What it looks like on a page</h2>
+      <p class="section-intro">The feature tour in Safari, with Lumen Reader's cursor on a checkbox. The same item is spoken, shown in the caption panel and shown in braille.</p>
+      <div class="shots">
+        <figure class="shot-wide">
+          <picture>
+            <source media="(max-width: 640px)" srcset="assets/screenshot-braille-narrow.jpg" width="900" height="182">
+            <img src="assets/screenshot-braille.jpg" width="1848" height="182" loading="lazy"
+               alt="The braille panel: a row of braille cells. The first 17 show “Subscribe ( ) chk” as raised dots, with the print letters underneath; the rest are empty.">
+          </picture>
+          <figcaption><strong>Braille panel.</strong> The item as an 8-dot braille display would show it, with short forms: “( )” for an unchecked box and “chk” for checkbox.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshot-tour.jpg" width="1382" height="1600" loading="lazy"
+               alt="Safari showing the Lumen Reader feature tour. The braille panel sits along the top of the window, a black and white outline surrounds the Subscribe checkbox in section 4, “Controls and their states”, and the caption panel at the bottom reads “Subscribe, unchecked, checkbox”.">
+          <figcaption><strong>All together.</strong> The braille panel at the top, the cursor on the checkbox and the caption panel at the bottom. You can drag either panel anywhere.</figcaption>
+        </figure>
+        <div class="shot-side">
+          <figure>
+            <img src="assets/screenshot-outline.jpg" width="1160" height="400" loading="lazy"
+                 alt="Close-up of the form: a thick black and white outline surrounds the Subscribe checkbox. Above it are Save, Delete and Send buttons; below it, a Size group with Small and Large options.">
+            <figcaption><strong>The cursor.</strong> An outline around the current item. It follows keyboard focus and moves on its own with Ctrl+Opt and the arrow keys.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/screenshot-caption.jpg" width="1296" height="126" loading="lazy"
+                 alt="The caption panel, a violet bar reading “Subscribe, unchecked, checkbox”.">
+            <figcaption><strong>Caption panel.</strong> Everything Lumen Reader says, with each word highlighted as it's spoken.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="features" class="alt" aria-labelledby="features-h">
     <div class="wrap">
