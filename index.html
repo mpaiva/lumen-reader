@@ -134,6 +134,7 @@
   .shots figcaption { color: var(--muted); font-size: 16px; margin-top: 10px; }
   .shots figcaption strong { color: var(--fg); }
   .shot-side { display: grid; gap: 28px; }
+  .shots + .grid { margin-top: 36px; }
 
   .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); list-style: none; padding: 0; margin: 0; }
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 18px; }
@@ -208,9 +209,9 @@
   <nav aria-label="Main">
     <ul>
       <li><a href="#features">Features</a></li>
+      <li><a href="#companion">Companion</a></li>
       <li><a href="#private">Privacy</a></li>
-      <li><a href="#install">Install</a></li>
-      <li><a href="https://github.com/mpaiva/lumen-reader/releases">Releases</a></li>
+      <li><a href="#install">Availability</a></li>
     </ul>
   </nav>
 </header>
@@ -219,15 +220,12 @@
   <div class="wrap hero" id="top">
     <img class="icon" src="assets/icon.png" alt="">
     <h1>Lumen Reader</h1>
-    <p class="lede">A screen reader for macOS that can also answer questions about your screen, take dictation, fill forms and describe pictures. All of it runs on your Mac.</p>
+    <p class="lede">A screen reader for macOS that can also answer questions about your screen, take dictation, fill forms, describe pictures and give you a glance at your whole Mac. All of it runs on your Mac.</p>
     <div class="actions">
-      <a class="button primary" href="https://github.com/mpaiva/lumen-reader/releases/latest">
-        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>
-        Download for Mac
-      </a>
-      <a class="button secondary" href="feature-tour.html">Take the feature tour</a>
+      <a class="button primary" href="feature-tour.html">Take the feature tour</a>
+      <a class="button secondary" href="#install">When can I try it?</a>
     </div>
-    <p class="fine">Free and open source · macOS 14 or later · Ctrl+Opt keys, the same as VoiceOver's</p>
+    <p class="fine">In private testing · macOS 14 or later · Ctrl+Opt keys, the same as VoiceOver's</p>
 
     <figure class="demo" aria-label="Example of the caption panel">
       <div class="panel" id="panel">
@@ -279,7 +277,7 @@
     <div class="wrap">
       <span class="eyebrow">Reading</span>
       <h2 id="features-h">Hear every control clearly</h2>
-      <p class="section-intro">Lumen Reader follows keyboard focus and says what each control is called, its state and its type, for example "Subscribe, unchecked, checkbox". It runs from the menu bar.</p>
+      <p class="section-intro">Lumen Reader follows keyboard focus and says what each control is called, its state and its type, for example "Subscribe, unchecked, checkbox". It runs from the menu bar and the Dock.</p>
       <ul class="grid">
         <li class="card">
           <h3>Its own cursor</h3>
@@ -355,7 +353,57 @@
     </div>
   </section>
 
-  <section id="private" class="alt" aria-labelledby="private-h">
+  <section id="companion" class="alt" aria-labelledby="companion-h">
+    <div class="wrap">
+      <span class="eyebrow">Companion window</span>
+      <h2 id="companion-h">Take in your whole Mac at a glance</h2>
+      <p class="section-intro">A sighted person looks over the screen in a second: what's open, what needs them, where things are. The companion window gives you the same overview in a window you move through with Lumen Reader. Open it from the Dock icon, or press <kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>G</kbd> twice.</p>
+      <div class="shots">
+        <figure class="shot-wide">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="assets/screenshot-companion-dark.jpg">
+            <img src="assets/screenshot-companion-light.jpg" width="1400" height="821" loading="lazy"
+                 alt="The Lumen companion window on its Make it mine section. A sidebar lists Glance, Activity, Ask, Watch, Make it mine and Layout, each with its Command key. A card headed New rule reads “Everywhere: read Slack notifications aloud as they arrive”, under it “You asked: Read Slack messages as they arrive”, with Use this rule, Change it and Not now buttons. Below, Your rules lists two rules, each with an on/off switch and a Delete button.">
+          </picture>
+          <figcaption><strong>Make it mine.</strong> Say what you want in your own words. Lumen Reader reads the rule back and waits for your yes.</figcaption>
+        </figure>
+      </div>
+      <ul class="grid companion-grid">
+        <li class="card">
+          <h3>Glance</h3>
+          <p>Where you are, what needs you (dialogs, unread badges) and every open window, most important first. Press <kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>G</kbd> once to just hear it.</p>
+          <p class="keys"><kbd>Cmd</kbd> <kbd>1</kbd> in the window</p>
+        </li>
+        <li class="card">
+          <h3>Activity</h3>
+          <p>What happened while you were busy: notifications, alerts, apps that came forward and everything Lumen Reader said, with a search.</p>
+          <p class="keys"><kbd>Cmd</kbd> <kbd>2</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Ask about your Mac</h3>
+          <p>"Which Finder windows are open?" "Did anyone message me?" Answers come with Go to buttons that take you there.</p>
+          <p class="keys"><kbd>Cmd</kbd> <kbd>3</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Watch</h3>
+          <p>"Tell me when this finishes." Lumen Reader keeps an eye on a download, a build or a page, or waits for a message from someone, and tells you once.</p>
+          <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>W</kbd>, or <kbd>Cmd</kbd> <kbd>4</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Make it mine</h3>
+          <p>"Speak less while I'm typing." "Read Slack messages as they arrive." Rules sit on top of your settings, so switching one off puts things back.</p>
+          <p class="keys"><kbd>Cmd</kbd> <kbd>5</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Layout</h3>
+          <p>Where things are on each display: "Safari fills the left two-thirds. Slack is on the right." Each of nine areas says what's there and takes you to it.</p>
+          <p class="keys"><kbd>Cmd</kbd> <kbd>6</kbd></p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="private" aria-labelledby="private-h">
     <div class="wrap split">
       <div>
         <span class="eyebrow">Privacy</span>
@@ -372,7 +420,11 @@
           </li>
           <li>
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M12 4v16"/></svg>
-            <span><strong>Works without AI too.</strong> Moving and reading, find, the rotor, tables, captions, Check before sending and the accessibility audit work on any supported Mac.</span>
+            <span><strong>Your history is yours.</strong> The companion's Activity is kept in a file only you can read, for a day. Turn it off or clear it from the menu.</span>
+          </li>
+          <li>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M12 4v16"/></svg>
+            <span><strong>Works without AI too.</strong> Moving and reading, find, the rotor, tables, captions, Check before sending, the accessibility audit, and the companion's Glance, Activity, Watch and Layout work on any supported Mac.</span>
           </li>
         </ul>
       </div>
@@ -381,7 +433,8 @@
           <caption>What the AI features need</caption>
           <thead><tr><th scope="col">Feature</th><th scope="col">Needs</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Ask, summarise, guessed names</th><td>macOS 26 with Apple Intelligence on</td></tr>
+            <tr><th scope="row">Ask, summarise, guessed names, asking about your Mac</th><td>macOS 26 with Apple Intelligence on</td></tr>
+            <tr><th scope="row">Rules in your own words</th><td>Common requests work anywhere; unusual ones need macOS 26 with Apple Intelligence on</td></tr>
             <tr><th scope="row">Dictation and voice commands</th><td>macOS 26 and Microphone permission</td></tr>
             <tr><th scope="row">Describe a picture</th><td>macOS 27 with Apple Intelligence on, and Screen Recording permission</td></tr>
             <tr><th scope="row">Text in a picture</th><td>Screen Recording permission</td></tr>
@@ -391,7 +444,7 @@
     </div>
   </section>
 
-  <section aria-labelledby="audit-h">
+  <section class="alt" aria-labelledby="audit-h">
     <div class="wrap split">
       <div>
         <span class="eyebrow">For builders</span>
@@ -426,14 +479,14 @@
     </div>
   </section>
 
-  <section id="faq" class="alt" aria-labelledby="faq-h">
+  <section id="faq" aria-labelledby="faq-h">
     <div class="wrap">
       <span class="eyebrow">Questions</span>
       <h2 id="faq-h">Good to know</h2>
       <div class="faq">
         <details>
           <summary>Does it replace VoiceOver?</summary>
-          <p>No. Lumen Reader is an experiment and a learning tool. It doesn't support braille displays or trackpad gestures yet, though a braille panel shows on screen what a display would. Both can run at once: while VoiceOver is on, Lumen Reader passes every key through to it.</p>
+          <p>No. Lumen Reader is an experiment and a learning tool. It doesn't support braille displays or trackpad gestures yet, though a braille panel shows on screen what a display would. You can keep both installed: while VoiceOver is on, Lumen Reader pauses and stays quiet. Press <kbd>Cmd</kbd> <kbd>F5</kbd> to turn VoiceOver off and Lumen Reader takes over; press it again to go back. The companion window works with VoiceOver too.</p>
         </details>
         <details>
           <summary>Will the keys feel familiar?</summary>
@@ -448,8 +501,8 @@
           <p>Any Mac with macOS 14 or later. Asking about the screen, dictation and voice commands need macOS 26 and a Mac with Apple Intelligence (Apple silicon, M1 or later). Describing pictures needs macOS 27.</p>
         </details>
         <details>
-          <summary>Why does macOS warn me about the installer?</summary>
-          <p>The installer isn't signed with an Apple Developer ID or notarised yet. Choose Done, then go to System Settings › Privacy &amp; Security and click Open Anyway next to the message about the installer.</p>
+          <summary>What is the Dock icon for?</summary>
+          <p>It opens the companion window: a glance at your Mac, recent activity, questions about your Mac, watches, your rules and where things are on your screens. Lumen Reader keeps reading while the window is closed; <kbd>Cmd</kbd> <kbd>W</kbd> closes it.</p>
         </details>
         <details>
           <summary>Which apps does it work with?</summary>
@@ -463,36 +516,21 @@
     </div>
   </section>
 
-  <section id="install" aria-labelledby="install-h">
+  <section id="install" class="alt" aria-labelledby="install-h">
     <div class="wrap">
-      <span class="eyebrow">Install</span>
-      <h2 id="install-h">Running in a few minutes</h2>
-      <ol class="steps">
-        <li>
-          <h3>Download</h3>
-          <p>Get the <code>.pkg</code> from the <a href="https://github.com/mpaiva/lumen-reader/releases/latest">latest release</a> and open it. It installs into Applications and starts.</p>
-        </li>
-        <li>
-          <h3>Allow the installer</h3>
-          <p>The installer isn't notarised yet. If macOS warns you, choose Done, then click <strong>Open Anyway</strong> in System Settings › Privacy &amp; Security.</p>
-        </li>
-        <li>
-          <h3>Turn on Accessibility</h3>
-          <p>From the menu bar icon, choose <strong>Open Accessibility Settings…</strong> and turn on Lumen Reader. You'll hear "Lumen Reader on".</p>
-        </li>
-      </ol>
-      <p class="note">Each <a href="https://github.com/mpaiva/lumen-reader/releases">release</a> says what's new. Already installed? The installer tells you which version you have, and continuing upgrades it.</p>
+      <span class="eyebrow">Availability</span>
+      <h2 id="install-h">In private testing for now</h2>
+      <p class="section-intro">Lumen Reader is being tried out by a small group of screen reader users before anyone else, so there's no public download yet. When it's ready for more people, the download will be here.</p>
     </div>
   </section>
 
   <section class="cta" aria-labelledby="cta-h">
     <div class="wrap">
       <div class="panel">
-        <h2 id="cta-h">Try Lumen Reader</h2>
-        <p>Free, open source and private by design.</p>
+        <h2 id="cta-h">See what it can do</h2>
+        <p>Every feature on one page, with what to try and what you'll hear.</p>
         <div class="actions">
-          <a class="button primary" href="https://github.com/mpaiva/lumen-reader/releases/latest">Download for Mac</a>
-          <a class="button secondary" href="feature-tour.html">Take the feature tour</a>
+          <a class="button primary" href="feature-tour.html">Take the feature tour</a>
         </div>
       </div>
     </div>
@@ -504,7 +542,6 @@
     <p>Lumen Reader by Sarah Massengale and Marcelo Paiva. Built on Apple's public accessibility APIs.</p>
     <ul>
       <li><a href="feature-tour.html">Feature tour</a></li>
-      <li><a href="https://github.com/mpaiva/lumen-reader/releases">Releases</a></li>
     </ul>
   </div>
 </footer>
