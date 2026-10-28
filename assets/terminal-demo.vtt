@@ -1,0 +1,133 @@
+WEBVTT
+
+00:00:00.455 --> 00:00:10.980
+This is Lumen Reader in the terminal. It reads what your commands print, echoes what you type, and has a cursor of its own for going back over the screen.
+
+00:00:13.112 --> 00:00:20.962
+Run a command, and Lumen reads its output. It leaves out the command you typed, and the prompt when it comes back.
+
+00:00:21.898 --> 00:00:23.821
+Lumen Reader: ls
+
+00:00:23.871 --> 00:00:27.590
+Lumen Reader: build.sh	notes.txt	README.md	serve.sh
+
+00:00:30.207 --> 00:00:32.606
+Lumen Reader: # Weather app
+A small app that shows the forecast.
+Run ./build.sh to build it.
+Run ./serve.sh to start the server.
+
+00:00:37.636 --> 00:00:54.086
+To go back over what's there, Control-Option and the arrow keys move a review cursor by line and by word, while the shell's cursor stays put. Pressed twice, Control-Option-W spells a word, and Control-Option-Period says where you are.
+
+00:00:54.701 --> 00:00:57.100
+Lumen Reader: Run ./serve.sh to start the server.
+
+00:00:58.447 --> 00:01:00.370
+Lumen Reader: Run ./build.sh to build it.
+
+00:01:01.716 --> 00:01:03.965
+Lumen Reader: A small app that shows the forecast.
+
+00:01:05.522 --> 00:01:07.418
+Lumen Reader: shows
+
+00:01:07.468 --> 00:01:09.305
+Lumen Reader: the
+
+00:01:09.355 --> 00:01:10.960
+Lumen Reader: t, h, e
+
+00:01:11.422 --> 00:01:13.597
+Lumen Reader: Line 5, column 24
+
+00:01:14.089 --> 00:01:16.338
+Lumen Reader: A small app that shows the forecast.
+
+00:01:17.816 --> 00:01:21.891
+Errors are read the same way, as soon as they appear.
+
+00:01:24.613 --> 00:01:28.585
+Lumen Reader: cat: todo.txt: No such file or directory
+
+00:01:28.860 --> 00:01:38.260
+Long output is cut down to its first lines, how many more there were, and the last line, which is usually the result or the error.
+
+00:01:40.805 --> 00:01:44.849
+Lumen Reader: 1
+2
+3
+4
+195 more lines. Last line: 200
+
+00:01:45.888 --> 00:01:55.513
+A full-screen program like less is announced once. After that, Lumen reads what each key changes, and says the prompt when you're back.
+
+00:01:58.401 --> 00:02:00.016
+Lumen Reader: Full screen: less
+
+00:02:00.516 --> 00:02:02.641
+Lumen Reader: Control-Option-A reads the screen
+
+00:02:06.096 --> 00:02:09.220
+Lumen Reader: - The search field keeps what you typed when you come back to it.
+
+00:02:12.348 --> 00:02:14.613
+Lumen Reader: weather-app %
+
+00:02:14.663 --> 00:02:21.713
+Output that keeps coming, like a server's log, is summed up every few seconds instead of piling up.
+
+00:02:24.782 --> 00:02:25.282
+Lumen Reader: Server listening on port 8080
+GET /forecast?city=1 200 in 12 ms
+
+00:02:25.091 --> 00:02:25.591
+Lumen Reader: GET /forecast?city=2 200 in 12 ms
+
+00:02:25.398 --> 00:02:25.898
+Lumen Reader: GET /forecast?city=3 200 in 12 ms
+
+00:02:25.704 --> 00:02:26.204
+Lumen Reader: GET /forecast?city=4 200 in 12 ms
+
+00:02:26.012 --> 00:02:29.095
+Lumen Reader: GET /forecast?city=5 200 in 12 ms
+
+00:02:29.140 --> 00:02:32.155
+Lumen Reader: 10 new lines, last: GET /forecast?city=15 200 in 12 ms
+
+00:02:32.210 --> 00:02:34.720
+Lumen Reader: 10 new lines, last: GET /forecast?city=25 200 in 12 ms
+
+00:02:34.720 --> 00:02:37.619
+Lumen Reader: 8 new lines, last: Server stopped
+
+00:02:41.328 --> 00:02:48.803
+Start something slow and go to another app. When it finishes, Lumen tells you how it went, wherever you are.
+
+00:02:51.447 --> 00:02:51.947
+Lumen Reader: ./build.sh
+Compiling 42 files
+
+00:02:51.906 --> 00:02:57.017
+Lumen Reader: Safari, Lumen Reader test page, toolbar, show sidebar, button
+
+00:02:57.517 --> 00:03:01.517
+Lumen Reader: Show sidebar
+
+00:03:03.015 --> 00:03:06.312
+Lumen Reader: Terminal: ./build.sh finished after 12 seconds
+
+00:03:09.624 --> 00:03:17.799
+The companion's Terminal section lists the commands you've run and how each one ended, with a button that takes you back to it.
+
+00:03:19.983 --> 00:03:27.232
+Lumen Reader: Lumen Reader, Terminal, Terminal: Last command: ./build.sh: finished after 12 seconds, in weather-app.
+
+00:03:29.403 --> 00:03:36.483
+Lumen Reader: Terminal, weather-app — lumen-terminal-demo.command — zsh -i — 176×47, terminal, weather-app %
+
+00:03:36.522 --> 00:03:39.347
+That's Lumen Reader in the terminal.

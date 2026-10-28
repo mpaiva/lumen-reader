@@ -135,6 +135,16 @@
   .shots figcaption strong { color: var(--fg); }
   .shot-side { display: grid; gap: 28px; }
   .shots + .grid { margin-top: 36px; }
+  .video-demo { margin: 0 0 36px; }
+  .video-demo video { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(52, 25, 107, 0.14); background: #1a1a1a; }
+  .video-demo figcaption { color: var(--muted); font-size: 16px; margin-top: 10px; }
+  .video-demo figcaption strong { color: var(--fg); }
+  .transcript { margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+  .transcript summary { cursor: pointer; font-weight: 600; padding: 14px 20px; }
+  .transcript .lines { padding: 0 20px 16px; max-height: 420px; overflow-y: auto; }
+  .transcript p { margin: 0 0 10px; font-size: 16px; }
+  .transcript .said { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14.5px; }
+  .transcript .who { font-family: inherit; font-weight: 600; }
 
   .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); list-style: none; padding: 0; margin: 0; }
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 18px; }
@@ -487,6 +497,61 @@
       <span class="eyebrow">For builders</span>
       <h2 id="terminal-h">A terminal that talks back</h2>
       <p class="section-intro">In the terminal, Lumen Reader reads what your commands print and lets you move over the terminal's text on its own, so you can work at the command line by ear.</p>
+      <figure class="video-demo">
+        <video controls preload="metadata" playsinline poster="assets/terminal-demo-poster.jpg" width="1600" height="1240"
+               aria-describedby="terminal-video-cap">
+          <source src="assets/terminal-demo.mp4" type="video/mp4">
+          <track kind="captions" src="assets/terminal-demo.vtt" srclang="en" label="English" default>
+          <a href="assets/terminal-demo.mp4">Download the demo video (MP4, 7 MB)</a>
+        </video>
+        <figcaption id="terminal-video-cap"><strong>Lumen Reader in the terminal, 3 minutes 41 seconds.</strong> A narrator explains each step; the other voice is Lumen Reader, as you'd hear it. Captions are on.</figcaption>
+        <details class="transcript">
+          <summary>Transcript</summary>
+          <div class="lines">
+          <p>This is Lumen Reader in the terminal. It reads what your commands print, echoes what you type, and has a cursor of its own for going back over the screen.</p>
+          <p>Run a command, and Lumen reads its output. It leaves out the command you typed, and the prompt when it comes back.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> ls</p>
+          <p class="said"><span class="who">Lumen Reader:</span> build.sh, notes.txt, README.md, serve.sh</p>
+          <p class="said"><span class="who">Lumen Reader:</span> # Weather app · A small app that shows the forecast. · Run ./build.sh to build it. · Run ./serve.sh to start the server.</p>
+          <p>To go back over what&#x27;s there, Control-Option and the arrow keys move a review cursor by line and by word, while the shell&#x27;s cursor stays put. Pressed twice, Control-Option-W spells a word, and Control-Option-Period says where you are.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Run ./serve.sh to start the server.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Run ./build.sh to build it.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> A small app that shows the forecast.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> shows</p>
+          <p class="said"><span class="who">Lumen Reader:</span> the</p>
+          <p class="said"><span class="who">Lumen Reader:</span> t, h, e</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Line 5, column 24</p>
+          <p class="said"><span class="who">Lumen Reader:</span> A small app that shows the forecast.</p>
+          <p>Errors are read the same way, as soon as they appear.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> cat: todo.txt: No such file or directory</p>
+          <p>Long output is cut down to its first lines, how many more there were, and the last line, which is usually the result or the error.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> 1 · 2 · 3 · 4 · 195 more lines. Last line: 200</p>
+          <p>A full-screen program like less is announced once. After that, Lumen reads what each key changes, and says the prompt when you&#x27;re back.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Full screen: less</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Control-Option-A reads the screen</p>
+          <p class="said"><span class="who">Lumen Reader:</span> - The search field keeps what you typed when you come back to it.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> weather-app %</p>
+          <p>Output that keeps coming, like a server&#x27;s log, is summed up every few seconds instead of piling up.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Server listening on port 8080 · GET /forecast?city=1 200 in 12 ms</p>
+          <p class="said"><span class="who">Lumen Reader:</span> GET /forecast?city=2 200 in 12 ms</p>
+          <p class="said"><span class="who">Lumen Reader:</span> GET /forecast?city=3 200 in 12 ms</p>
+          <p class="said"><span class="who">Lumen Reader:</span> GET /forecast?city=4 200 in 12 ms</p>
+          <p class="said"><span class="who">Lumen Reader:</span> GET /forecast?city=5 200 in 12 ms</p>
+          <p class="said"><span class="who">Lumen Reader:</span> 10 new lines, last: GET /forecast?city=15 200 in 12 ms</p>
+          <p class="said"><span class="who">Lumen Reader:</span> 10 new lines, last: GET /forecast?city=25 200 in 12 ms</p>
+          <p class="said"><span class="who">Lumen Reader:</span> 8 new lines, last: Server stopped</p>
+          <p>Start something slow and go to another app. When it finishes, Lumen tells you how it went, wherever you are.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> ./build.sh · Compiling 42 files</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Safari, Lumen Reader test page, toolbar, show sidebar, button</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Show sidebar</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Terminal: ./build.sh finished after 12 seconds</p>
+          <p>The companion&#x27;s Terminal section lists the commands you&#x27;ve run and how each one ended, with a button that takes you back to it.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Lumen Reader, Terminal, Terminal: Last command: ./build.sh: finished after 12 seconds, in weather-app.</p>
+          <p class="said"><span class="who">Lumen Reader:</span> Terminal, weather-app — lumen-terminal-demo.command — zsh -i — 176×47, terminal, weather-app %</p>
+          <p>That&#x27;s Lumen Reader in the terminal.</p>
+          </div>
+        </details>
+      </figure>
       <ul class="grid">
         <li class="card">
           <h3>New output, read for you</h3>
