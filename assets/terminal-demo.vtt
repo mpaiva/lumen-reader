@@ -12,7 +12,7 @@ Lumen Reader: ls
 00:00:23.871 --> 00:00:27.590
 Lumen Reader: build.sh	notes.txt	README.md	serve.sh
 
-00:00:30.207 --> 00:00:32.606
+00:00:30.207 --> 00:00:37.454
 Lumen Reader: # Weather app
 A small app that shows the forecast.
 Run ./build.sh to build it.
@@ -54,14 +54,14 @@ Lumen Reader: cat: todo.txt: No such file or directory
 00:01:28.860 --> 00:01:38.260
 Long output is cut down to its first lines, how many more there were, and the last line, which is usually the result or the error.
 
-00:01:40.805 --> 00:01:44.849
+00:01:40.805 --> 00:01:45.790
 Lumen Reader: 1
 2
 3
 4
 195 more lines. Last line: 200
 
-00:01:45.888 --> 00:01:55.513
+00:01:46.090 --> 00:01:55.715
 A full-screen program like less is announced once. After that, Lumen reads what each key changes, and says the prompt when you're back.
 
 00:01:58.401 --> 00:02:00.016
@@ -79,23 +79,11 @@ Lumen Reader: weather-app %
 00:02:14.663 --> 00:02:21.713
 Output that keeps coming, like a server's log, is summed up every few seconds instead of piling up.
 
-00:02:24.782 --> 00:02:25.282
+00:02:24.782 --> 00:02:29.140
 Lumen Reader: Server listening on port 8080
 GET /forecast?city=1 200 in 12 ms
 
-00:02:25.091 --> 00:02:25.591
-Lumen Reader: GET /forecast?city=2 200 in 12 ms
-
-00:02:25.398 --> 00:02:25.898
-Lumen Reader: GET /forecast?city=3 200 in 12 ms
-
-00:02:25.704 --> 00:02:26.204
-Lumen Reader: GET /forecast?city=4 200 in 12 ms
-
-00:02:26.012 --> 00:02:29.095
-Lumen Reader: GET /forecast?city=5 200 in 12 ms
-
-00:02:29.140 --> 00:02:32.155
+00:02:29.140 --> 00:02:32.210
 Lumen Reader: 10 new lines, last: GET /forecast?city=15 200 in 12 ms
 
 00:02:32.210 --> 00:02:34.720
@@ -109,7 +97,6 @@ Start something slow and go to another app. When it finishes, Lumen tells you ho
 
 00:02:51.447 --> 00:02:51.947
 Lumen Reader: ./build.sh
-Compiling 42 files
 
 00:02:51.906 --> 00:02:57.017
 Lumen Reader: Safari, Lumen Reader test page, toolbar, show sidebar, button
@@ -126,8 +113,8 @@ The companion's Terminal section lists the commands you've run and how each one 
 00:03:19.983 --> 00:03:27.232
 Lumen Reader: Lumen Reader, Terminal, Terminal: Last command: ./build.sh: finished after 12 seconds, in weather-app.
 
-00:03:29.403 --> 00:03:36.483
+00:03:29.403 --> 00:03:36.435
 Lumen Reader: Terminal, weather-app — lumen-terminal-demo.command — zsh -i — 176×47, terminal, weather-app %
 
-00:03:36.522 --> 00:03:39.347
+00:03:36.735 --> 00:03:39.560
 That's Lumen Reader in the terminal.
