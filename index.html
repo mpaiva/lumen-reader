@@ -486,7 +486,7 @@
     <div class="wrap">
       <span class="eyebrow">For builders</span>
       <h2 id="terminal-h">A terminal that talks back</h2>
-      <p class="section-intro">In Terminal, Lumen Reader works the way Speakup, the screen reader built into Linux, reads a console. It starts once you've logged in: macOS doesn't let any screen reader but VoiceOver run before that.</p>
+      <p class="section-intro">In Terminal and Ghostty, Lumen Reader works the way Speakup, the screen reader built into Linux, reads a console. It starts once you've logged in: macOS doesn't let any screen reader but VoiceOver run before that.</p>
       <ul class="grid">
         <li class="card">
           <h3>New output, read for you</h3>
@@ -502,6 +502,21 @@
           <h3>Typing echo</h3>
           <p>Letters you type or delete are echoed, and so is a completed file name or a command recalled with the Up arrow. To move around the window instead, step out of the terminal's keys and back.</p>
           <p class="keys"><kbd>Ctrl</kbd> <kbd>Opt</kbd> <kbd>Shift</kbd> <kbd>Up</kbd> / <kbd>Down</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Every command, in the companion</h3>
+          <p>The companion's Terminal section lists the commands you've run, in any terminal app, and how each ended: "swift build: failed (exit 1) after 42 seconds". A long command that finishes while you're in another app is said.</p>
+          <p class="keys">In the companion: <kbd>Cmd</kbd> <kbd>8</kbd></p>
+        </li>
+        <li class="card">
+          <h3>Coding agents in herdr</h3>
+          <p>If you run coding agents in <a href="https://herdr.dev">herdr</a>, the companion lists each one and what it's doing, and Lumen Reader tells you when one needs you or is done, whichever app you're in.</p>
+          <p class="keys">Go to it brings the agent's pane forward</p>
+        </li>
+        <li class="card">
+          <h3>On your Mac only</h3>
+          <p>Commands are recorded by one line in your .zshrc, which you add or remove from the companion. The list stays on your Mac. For now this works with zsh, the Mac's own shell.</p>
+          <p class="keys">Turn on for zsh</p>
         </li>
       </ul>
     </div>
